@@ -1,0 +1,34 @@
+@import "./styles/tokens.css";
+@custom-variant dark (&:where(.dark, .dark *));
+:root { color-scheme: light; }
+:root.dark { color-scheme: dark; }
+@layer base {
+  * { @apply border-porcelain-300 dark:border-ink-700; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-porcelain-100 text-ink-950 dark:bg-ink-950 dark:text-porcelain-100 font-sans antialiased;
+    transition: background-color 0.35s var(--ease-premium), color 0.35s var(--ease-premium);
+  }
+  ::selection { @apply bg-cobalt-500/20 text-cobalt-700 dark:text-cobalt-400; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-ink-950/15 dark:bg-porcelain-100/15; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-ink-950/30 dark:bg-porcelain-100/30; }
+  :focus-visible { outline: 2px solid var(--color-cobalt-500); outline-offset: 3px; border-radius: var(--radius-sm); }
+}
+@layer utilities {
+  .price { font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .glass { @apply bg-white/60 dark:bg-ink-900/50 backdrop-blur-xl border border-white/40 dark:border-white/10; }
+  .glass-strong { @apply bg-white/80 dark:bg-ink-900/80 backdrop-blur-2xl border border-white/50 dark:border-white/10; }
+  .surface-card { @apply bg-white dark:bg-ink-900 rounded-2xl shadow-[var(--shadow-soft)] dark:shadow-[var(--shadow-soft-dark)]; }
+  .surface-card-lift { transition: transform 0.4s var(--ease-premium), box-shadow 0.4s var(--ease-premium); }
+  .surface-card-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .dark .surface-card-lift:hover { box-shadow: var(--shadow-lift-dark); }
+  .range-thumb::-webkit-slider-thumb { pointer-events: auto; appearance: none; height: 18px; width: 18px; border-radius: 999px; background: white; border: 3px solid var(--color-cobalt-500); box-shadow: 0 1px 4px rgba(0,0,0,0.25); cursor: pointer; }
+  .range-thumb::-moz-range-thumb { pointer-events: auto; height: 18px; width: 18px; border-radius: 999px; background: white; border: 3px solid var(--color-cobalt-500); box-shadow: 0 1px 4px rgba(0,0,0,0.25); cursor: pointer; }
+  .range-thumb::-webkit-slider-runnable-track { background: transparent; }
+  .range-thumb::-moz-range-track { background: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
