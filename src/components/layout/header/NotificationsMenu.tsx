@@ -6,16 +6,18 @@ import { IconButton } from '@/components/ui/IconButton'
 import { useNotificationsStore } from '@/store/useNotificationsStore'
 import { notificationIcon } from '@/lib/notificationMeta'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/useAuthStore'
 
 export function NotificationsMenu() {
   const notifications = useNotificationsStore((s) => s.notifications)
   const fetchNotifications = useNotificationsStore((s) => s.fetchNotifications)
   const markAsRead = useNotificationsStore((s) => s.markAsRead)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
   useEffect(() => {
-    fetchNotifications()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  if (isAuthenticated) fetchNotifications().catch(() => {})
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isAuthenticated])
 
   const unreadCount = notifications.filter((n) => !n.isRead).length
   const preview = notifications.slice(0, 4)

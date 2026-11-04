@@ -11,6 +11,7 @@ import { useNotificationsStore } from '@/store/useNotificationsStore'
 import { notificationCategoryLabel } from '@/lib/notificationMeta'
 import type { NotificationCategory } from '@/types'
 import { cn } from '@/lib/utils'
+import { useAuthStore } from '@/store/useAuthStore'
 
 const PAGE_SIZE = 6
 
@@ -37,11 +38,16 @@ export default function NotificationsPage() {
   const [loading, setLoading] = useState(true)
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
 
   useEffect(() => {
-    fetchNotifications().finally(() => setLoading(false))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  if (isAuthenticated) {
+    fetchNotifications().catch(() => {}).finally(() => setLoading(false))
+  } else {
+    setLoading(false)
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [isAuthenticated])
 
   const filtered = useMemo(() => {
     return allNotifications.filter((n) => {
